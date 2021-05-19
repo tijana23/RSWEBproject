@@ -1,0 +1,92 @@
+﻿@model Feit.Models.Teacher
+
+@{ ViewData["Title"] = "Courses"; }
+
+<h1>Courses</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Credits
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Programme
+            </th>
+            <th>
+                Semester
+            </th>
+            <th>
+                EducationLevel
+            </th>
+            <th>
+                First Teacher
+            </th>
+            <th>
+                Second Teacher
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Courses1)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Credits)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Programme)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Semester)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EducationLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstTeacher.FullName)
+            <td>
+                @Html.DisplayFor(modelItem => item.SecondTeacher.FullName)
+            </td>
+            <td>
+               
+            </td>
+        </tr>}
+        @foreach (var item in Model.Courses2)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Credits)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Programme)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EducationLevel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstTeacher.FullName)
+        <td>
+            @Html.DisplayFor(modelItem => item.SecondTeacher.FullName)
+        </td>
+        <td>
+            
+        </td>
+    </tr>}
+    </tbody>
+</table>
+
+<a asp-action="Index">Back to List</a>

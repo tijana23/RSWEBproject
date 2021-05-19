@@ -1,0 +1,81 @@
+﻿@model Feit.ViewModels.StudentViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Students</h1>
+
+<form asp-controller="Students" asp-action="Create" method="get">
+    <button type="submit" class="btn btn-primary">Add new student</button>
+</form>
+<h1> </h1>
+<form asp-controller="Students" asp-action="Index" method="get">
+    <p>
+        Student ID: <input type="text" asp-for="SearchStudentId" /> <input type="submit" value="Apply" class="btn-primary"/>
+        First Name: <input type="text" asp-for="SearchFirstName" /> <input type="submit" value="Apply" class="btn-primary" />
+        Last Name: <input type="text" asp-for="SearchLastName" /> <input type="submit" value="Apply" class="btn-primary" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Student ID
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                First Name
+            </th>
+            <th>
+                Education level
+            </th>
+            <th>
+                Acquired Credits
+            </th>
+            <th>
+                Current Semester
+            </th>
+            <th>
+                Enrollment Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EducationLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AcquiredCredits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentSemestar)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                </td>
+                <td>
+                    <form asp-action="Courses" asp-route-id="@item.Id" method="get">            <button type="submit" class="btn btn-primary">courses</button>        </form>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

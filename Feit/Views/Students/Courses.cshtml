@@ -1,0 +1,98 @@
+﻿@model IList<Enrollment>
+
+@{ ViewData["Title"] = "Courses"; }
+
+<h1>Courses</h1>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Course
+            </th>
+            <th>
+                Semester
+            </th>
+            <th>
+                Student
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Grade
+            </th>
+            <th>
+                Seminal Url
+            </th>
+            <th>
+                Project Url
+            </th>
+            <th>
+                Exam Points
+            </th>
+            <th>
+                Seminal Points
+            </th>
+            <th>
+                Project Points
+            </th>
+            <th>
+                Additional Points
+            </th>
+            <th>
+                Finish Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semester)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminalUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExamPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminalPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AdditionalPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinishDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">ova posle</a> 
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

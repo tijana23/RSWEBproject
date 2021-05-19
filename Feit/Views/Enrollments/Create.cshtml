@@ -1,0 +1,90 @@
+﻿@model Feit.Models.Enrollment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Додади нов</h1>
+
+<h4>Запишан студент</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CourseId" class="control-label">Предмет</label>
+                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId">
+                    <option value="">Одбери</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label">Студент</label>
+                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId">
+                    <option value="">Одбери</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Semester" class="control-label">Семестар</label>
+                <input asp-for="Semester" class="form-control" />
+                <span asp-validation-for="Semester" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label">Година</label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Grade" class="control-label">Оцена</label>
+                <input asp-for="Grade" class="form-control" />
+                <span asp-validation-for="Grade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeminalUrl" class="control-label">Линк од колоквиум</label>
+                <input asp-for="SeminalUrl" class="form-control" />
+                <span asp-validation-for="SeminalUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectUrl" class="control-label">Линк од проект</label>
+                <input asp-for="ProjectUrl" class="form-control" />
+                <span asp-validation-for="ProjectUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExamPoints" class="control-label">Вкупно поени</label>
+                <input asp-for="ExamPoints" class="form-control" />
+                <span asp-validation-for="ExamPoints" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeminalPoints" class="control-label">Поени од колоквиум</label>
+                <input asp-for="SeminalPoints" class="form-control" />
+                <span asp-validation-for="SeminalPoints" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectPoints" class="control-label">Поени од проект</label>
+                <input asp-for="ProjectPoints" class="form-control" />
+                <span asp-validation-for="ProjectPoints" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalPoints" class="control-label">Дополнителни поени</label>
+                <input asp-for="AdditionalPoints" class="form-control" />
+                <span asp-validation-for="AdditionalPoints" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinishDate" class="control-label">Датум на положување</label>
+                <input asp-for="FinishDate" class="form-control" />
+                <span asp-validation-for="FinishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Додади" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад кон листата</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
