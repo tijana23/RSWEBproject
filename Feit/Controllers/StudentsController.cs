@@ -14,7 +14,6 @@ namespace Feit.Controllers
     public class StudentsController : Controller
     {
         private readonly FeitContext _context;
-
         public StudentsController(FeitContext context)
         {
             _context = context;
@@ -44,6 +43,23 @@ namespace Feit.Controllers
             return View(studentVM);
         }
 
+         public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Student
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
         // GET: Students/Create
         public IActionResult Create()
         {
@@ -65,6 +81,22 @@ namespace Feit.Controllers
             }
             return View(student);
         }
+        /* private string UploadedFile(Student model)
+        {
+            string uniqueFileName = null;
+
+            if (model.ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.ProfileImage.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ProfileImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }*/
 
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(long? id)
@@ -98,6 +130,8 @@ namespace Feit.Controllers
             {
                 try
                 {
+                    /*string uniqueFileName = UploadedFile(student);*/
+                  /*  student.ProfilePicture = uniqueFileName;*/
                     _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
@@ -163,10 +197,70 @@ namespace Feit.Controllers
 
             return View(Enroll);
         }
+        //GET
+        public async Task<IActionResult> CourseDetails(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var enrollment = await _context.Enrollment
+                .Include(e => e.Course)
+                .Include(e => e.Student)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
+            return View(enrollment);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CourseDetails(long id, [Bind("Id,CourseId,StudentId,Semester,Year,Grade,SeminalUrl,ProjectUrl,ExamPoints,SeminalPoints,ProjectPoints,AdditionalPoints,FinishDate")] Enrollment enrollment)
+        {
+            if (id != enrollment.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(enrollment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EnrollmentExists(enrollment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Courses), new { id = enrollment.StudentId });
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
+            return View(enrollment);
+        }
 
         private bool StudentExists(long id)
         {
             return _context.Student.Any(e => e.Id == id);
+        }
+
+        private bool EnrollmentExists(long id)
+        {
+            return _context.Enrollment.Any(e => e.Id == id);
         }
     }
 }

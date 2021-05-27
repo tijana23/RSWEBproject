@@ -29,6 +29,9 @@ namespace Feit.Models
         [Display(Name = "Enrollment Date")]
         public DateTime EnrollmentDate { get; set; }
         public ICollection<Enrollment> Courses { get; set; }
+
+         [Required(ErrorMessage = "Please choose profile image")]
+        public string ProfilePicture { get; set; }
         public string FullName
         {
             get

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Feit.Data;
 using Feit.Models;
 using Feit.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Feit.Controllers
 {
@@ -80,12 +81,30 @@ namespace Feit.Controllers
         {
             if (ModelState.IsValid)
             {
+               /* string uniqueFileName = UploadedFile(teacher);*/
+                /*teacher.ProfilePicture = uniqueFileName;*/
                 _context.Add(teacher);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(teacher);
+            return View();
         }
+       /*  private string UploadedFile(Teacher model)
+        {
+            string uniqueFileName = null;
+
+            if (model.ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.ProfileImage.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ProfileImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }*/
 
         // GET: Teachers/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -119,6 +138,8 @@ namespace Feit.Controllers
             {
                 try
                 {
+                   /* string uniqueFileName = UploadedFile(teacher);*/
+                   /* teacher.ProfilePicture = uniqueFileName;*/
                     _context.Update(teacher);
                     await _context.SaveChangesAsync();
                 }
@@ -182,11 +203,109 @@ namespace Feit.Controllers
 
             return View(teacher);
         }
+        public async Task<IActionResult> Enrollments(int? id, int courseid, int? year)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            IQueryable<Enrollment> enrollments = _context.Enrollment.AsQueryable();
+            enrollments = _context.Enrollment.Include(t => t.Student);
+            IQueryable<int> yearQuery = _context.Enrollment.OrderBy(m => m.Year).Select(m => m.Year).Distinct();
+            enrollments = enrollments.Where(x => x.CourseId == courseid);
+            if (year != null)
+            {
+                enrollments = enrollments.Where(x => x.Year == year);
+            }
+            var teacher = await _context.Teacher
+                .FirstOrDefaultAsync(t => t.Id == id);
+            ViewData["teacher"] = teacher.FullName;
+            ViewData["tid"] = id;
+
+            var course = await _context.Course
+                .FirstOrDefaultAsync(t => t.Id == courseid);
+            ViewData["id"] = courseid;
+            ViewData["course"] = course.Title;
+
+            var searchYearVM = new SearchYear
+            {
+                Years = new SelectList(await yearQuery.ToListAsync()),
+                Enrollments = await enrollments.ToListAsync(),
+                CourseId = courseid
+            };
+            return View(searchYearVM);
+        }
+
+        public async Task<IActionResult> EnrollDetails(long? id, int tid, long sid, int cid, int year)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["id"] = id;
+            ViewData["teacher"] = tid;
+            ViewData["student"] = sid;
+            ViewData["course"] = cid;
+            ViewData["year"] = year;
+
+            var enrollment = await _context.Enrollment
+                .Include(e => e.Course)
+                .Include(e => e.Student)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course.Where(p => p.Id == cid), "Id", "Title");
+            ViewData["StudentId"] = new SelectList(_context.Student.Where(p => p.Id == sid), "Id", "FullName");
+            return View(enrollment);
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EnrollDetails(long id, [Bind("Id,CourseId,StudentId,Semester,Year,Grade,SeminalUrl,ProjectUrl,ExamPoints,SeminalPoints,ProjectPoints,AdditionalPoints,FinishDate")] Enrollment enrollment, int tid, int cid, int year)
+        {
+            if (id != enrollment.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(enrollment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EnrollmentExists(enrollment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Enrollments), new { id = tid, courseid = cid, year = year });
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", enrollment.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FullName", enrollment.StudentId);
+            return View(enrollment);
+        }
 
         private bool TeacherExists(int id)
         {
             return _context.Teacher.Any(e => e.Id == id);
+        }
+
+        private bool EnrollmentExists(long id)
+        {
+            return _context.Enrollment.Any(e => e.Id == id);
         }
     }
 }

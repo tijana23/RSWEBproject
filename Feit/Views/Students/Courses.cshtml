@@ -3,6 +3,7 @@
 @{ ViewData["Title"] = "Courses"; }
 
 <h1>Courses</h1>
+<p><b>Current student: </b>@ViewData["student"]</p>
 
 
 
@@ -89,7 +90,7 @@
                     @Html.DisplayFor(modelItem => item.FinishDate)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">ova posle</a> 
+                    <a asp-action="CourseDetails" asp-route-id="@item.Id">details</a> 
 
                 </td>
             </tr>

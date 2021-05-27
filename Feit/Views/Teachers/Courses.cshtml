@@ -56,7 +56,8 @@
                 @Html.DisplayFor(modelItem => item.SecondTeacher.FullName)
             </td>
             <td>
-               
+                <a asp-action="Enrollments" asp-route-id="@Model.Id" asp-route-courseid="@item.Id" asp-route-year="2021">students</a>
+
             </td>
         </tr>}
         @foreach (var item in Model.Courses2)
@@ -83,7 +84,7 @@
             @Html.DisplayFor(modelItem => item.SecondTeacher.FullName)
         </td>
         <td>
-            
+            <a asp-action="Enrollments" asp-route-id="@Model.Id" asp-route-courseid="@item.Id" asp-route-year="2021">students</a>
         </td>
     </tr>}
     </tbody>

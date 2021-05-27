@@ -1,4 +1,6 @@
-﻿using Feit.Data;
+﻿using Feit.Areas.Identity.Data;
+using Feit.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,10 +12,32 @@ namespace Feit.Models
 {
     public class SeedData
     {
+        public static async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<FeitUser>>();
+            IdentityResult roleResult;
+            //Add Admin Role
+            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
+            if (!roleCheck) { roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin")); }
+           
+            FeitUser user = await UserManager.FindByEmailAsync("admin@feit.com");
+            if (user == null)
+            {
+                var User = new FeitUser();
+                User.Email = "admin@feit.com";
+                User.UserName = "admin@feit.com";
+                string userPWD = "Admin123";
+                IdentityResult chkUser = await UserManager.CreateAsync(User, userPWD);
+                //Add default User to Role Admin
+                if (chkUser.Succeeded) { var result1 = await UserManager.AddToRoleAsync(User, "Admin"); }
+            }
+        }
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new FeitContext(serviceProvider.GetRequiredService<DbContextOptions<FeitContext>>()))
             {
+                CreateUserRoles(serviceProvider).Wait();
                 if (context.Student.Any() || context.Teacher.Any() || context.Course.Any())
                 {
                     return;

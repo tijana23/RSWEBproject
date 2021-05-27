@@ -181,10 +181,38 @@ namespace Feit.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult Enroll()
+        {
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Id");
+            ViewData["StudentId"] = new SelectList(_context.Set<Student>(), "Id", "Id");
+            return View();
+        }
 
+        // POST: Enrollments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Enroll([Bind("Id,CourseId,Semester,StudentId,Year,Grade,SeminalUrl,ProjectUrl,ExamPoints,SeminalPoints,ProjectPoints,AdditionalPoints,FinishDate")] Enrollment enrollment)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(enrollment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Id", enrollment.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Set<Student>(), "Id", "Id", enrollment.StudentId);
+            return View(enrollment);
+        }
         private bool CourseExists(int id)
         {
             return _context.Course.Any(e => e.Id == id);
+        }
+
+        private bool EnrollmentExists(long id)
+        {
+            return _context.Enrollment.Any(e => e.Id == id);
         }
     }
 }

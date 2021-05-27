@@ -31,6 +31,8 @@ namespace Feit.Models
         public ICollection<Course> Courses1 { get; set; }
         [InverseProperty("SecondTeacher")]
         public ICollection<Course> Courses2 { get; set; }
+         [Required(ErrorMessage = "Please choose profile image")]
+        public string ProfilePicture { get; set; }
         public string FullName
         {
             get { return LastName + " " + FirstName; }

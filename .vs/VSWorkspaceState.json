@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Feit",
+    "\\Feit\\Controllers",
+    "\\Feit\\Data",
+    "\\Feit\\Migrations",
+    "\\Feit\\Models",
+    "\\Feit\\ViewModels",
+    "\\Feit\\Views",
+    "\\Feit\\Views\\Students",
+    "\\Feit\\Views\\Teachers"
+  ],
+  "SelectedNode": "\\Feit.sln",
+  "PreviewInSolutionExplorer": false
+}

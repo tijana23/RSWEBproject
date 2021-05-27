@@ -1,0 +1,47 @@
+﻿@model IList<Enrollment>
+
+@{ ViewData["Title"] = "Students"; }
+
+<h1>List of students</h1>
+
+<p><b>Current Course: </b>@ViewData["course"]</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Course </th>
+            <th>Student</th>
+            <th>Semester</th>
+            <th>Year</th>
+            <th>Grade</th>
+            <th>Finish Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Student.FullName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Semester)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Year)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Grade)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FinishDate)
+    </td>
+    <td>
+        
+    </td>
+</tr>}
+    </tbody>
+</table>
+
+<a asp-action="Index">Back to List</a>

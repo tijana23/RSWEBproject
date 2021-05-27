@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\as\\source\\repos\\Feit\\Feit\\Feit.csproj": {}
+    "C:\\Users\\as\\Desktop\\RswebProject\\Feit\\Feit.csproj": {}
   },
   "projects": {
-    "C:\\Users\\as\\source\\repos\\Feit\\Feit\\Feit.csproj": {
+    "C:\\Users\\as\\Desktop\\RswebProject\\Feit\\Feit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\as\\source\\repos\\Feit\\Feit\\Feit.csproj",
+        "projectUniqueName": "C:\\Users\\as\\Desktop\\RswebProject\\Feit\\Feit.csproj",
         "projectName": "Feit",
-        "projectPath": "C:\\Users\\as\\source\\repos\\Feit\\Feit\\Feit.csproj",
+        "projectPath": "C:\\Users\\as\\Desktop\\RswebProject\\Feit\\Feit.csproj",
         "packagesPath": "C:\\Users\\as\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\as\\source\\repos\\Feit\\Feit\\obj\\",
+        "outputPath": "C:\\Users\\as\\Desktop\\RswebProject\\Feit\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\as\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,21 +40,33 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[5.0.6, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[5.0.5, )"
+              "version": "[5.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[5.0.4, )"
+              "version": "[5.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[5.0.4, )"
+              "version": "[5.0.6, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
